@@ -2,7 +2,7 @@
 #include "HarmonyTrainerComponent.h"
 
 //==============================================================================
-class HarmonyTrainerApplication  : public JUCEApplication
+class HarmonyTrainerApplication  : public juce::JUCEApplication
 {
 public:
     //==============================================================================
@@ -12,12 +12,12 @@ public:
     {
     }
 
-    const String getApplicationName() override       { return ProjectInfo::projectName; }
-    const String getApplicationVersion() override    { return ProjectInfo::versionString; }
-    bool moreThanOneInstanceAllowed() override       { return true; }
+    const juce::String getApplicationName() override       { return ProjectInfo::projectName; }
+    const juce::String getApplicationVersion() override    { return ProjectInfo::versionString; }
+    bool moreThanOneInstanceAllowed() override       { return false; }
 
     //==============================================================================
-    void initialise (const String& commandLine) override
+    void initialise (const juce::String& commandLine) override
     {
         mainWindow.reset (new HarmonyTrainerWindow (getApplicationName()));
     }
@@ -26,16 +26,15 @@ public:
 
     //==============================================================================
     void systemRequestedQuit() override                                 { quit(); }
-    void anotherInstanceStarted (const String&) override                {}
 
 private:
-    class HarmonyTrainerWindow    : public DocumentWindow
+    class HarmonyTrainerWindow    : public juce::DocumentWindow
     {
     public:
-        HarmonyTrainerWindow (const String& name)
-            : DocumentWindow (name,
-                              Desktop::getInstance().getDefaultLookAndFeel().findColour (ResizableWindow::backgroundColourId),
-                              DocumentWindow::allButtons)
+        HarmonyTrainerWindow (const juce::String& name)
+            : juce::DocumentWindow (name,
+                                    juce::Desktop::getInstance().getDefaultLookAndFeel().findColour (juce::ResizableWindow::backgroundColourId),
+                                    juce::DocumentWindow::allButtons)
             {
                 setUsingNativeTitleBar (true);
                 setResizable (true, false);
@@ -43,14 +42,14 @@ private:
 
                 setBounds ((int) (0.1f * getParentWidth()),
                            (int) (0.1f * getParentHeight()),
-                           jmax (850, (int) (0.5f * getParentWidth())),
-                           jmax (600, (int) (0.7f * getParentHeight())));
+                           juce::jmax (850, (int) (0.5f * getParentWidth())),
+                           juce::jmax (600, (int) (0.7f * getParentHeight())));
 
                 setContentOwned (new HarmonyTrainerComponent(), false);
                 setVisible (true);
             }
 
-        void closeButtonPressed() override    { JUCEApplication::getInstance()->systemRequestedQuit(); }
+        void closeButtonPressed() override    { juce::JUCEApplication::getInstance()->systemRequestedQuit(); }
 
         //==============================================================================
         HarmonyTrainerComponent& getHarmonyTrainerComponent()    { return *dynamic_cast<HarmonyTrainerComponent*> (getContentComponent()); }

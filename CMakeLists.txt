@@ -8,7 +8,6 @@ add_subdirectory(JUCE)
 
 juce_add_gui_app(HarmonyTrainer
     BUNDLE_ID                       org.baconpaul.HarmonyTrainer
-    DONT_SET_JUCE_NAMESPACE         True
     COMPANY_NAME                    "BaconPaul Stuff"
     COMPANY_WEBSITE                 "https://www.baconpaul.org/"
     # ICON_BIG                        ${CMAKE_CURRENT_SOURCE_DIR}/Source/JUCEAppIcon.png
@@ -20,11 +19,13 @@ juce_generate_juce_header(HarmonyTrainer)
 
 target_sources(HarmonyTrainer PRIVATE
     src/Main.cpp
+    src/HarmonyTrainerComponent.cpp
 )
 
 target_compile_definitions(HarmonyTrainer PRIVATE
     JUCE_ALLOW_STATIC_NULL_VARIABLES=0
     JUCE_STRICT_REFCOUNTEDPOINTER=1
+    DONT_SET_USING_JUCE_NAMESPACE=1
 )
 
 target_link_libraries(HarmonyTrainer PRIVATE
