@@ -6,11 +6,12 @@
 
 class HarmonyTrainerComponent : public juce::Component,
                                 public juce::MidiInputCallback,
-                                public juce::MidiKeyboardStateListener
+                                public juce::MidiKeyboardStateListener,
+                                public juce::MenuBarModel
 {
 public:
     HarmonyTrainerComponent();
-    ~HarmonyTrainerComponent() override { }
+    ~HarmonyTrainerComponent() override;
 
     void resized() override;
 
@@ -22,13 +23,25 @@ public:
     void handleNoteOff (juce::MidiKeyboardState *source, int midiChannel, int midiNoteNumber, float velocity) override;
 
     void paint( juce::Graphics & g ) override;
-    
+
+    virtual juce::StringArray getMenuBarNames() override {
+        juce::StringArray res;
+        res.add("File");
+        res.add("Modes");
+        res.add("Help");
+        return res;
+    }
+
+    virtual juce::PopupMenu getMenuForIndex( int idx, const juce::String &n ) override;
+    virtual void menuItemSelected( int id, int topLevelMenuIndex ) override;
+
+    void replaceAnalytic( std::shared_ptr<PracticeAnalytic> na );
 private:
     juce::AudioDeviceManager deviceManager;
 
     juce::MidiKeyboardState keyboardState;
-    std::unique_ptr<juce::MidiKeyboardComponent> keyboardComponent;
-    std::unique_ptr<PracticeAnalytic> analytic;
+    std::shared_ptr<juce::MidiKeyboardComponent> keyboardComponent;
+    std::shared_ptr<PracticeAnalytic> analytic;
     
     int lastInputIndex = 0;
     bool isAddingFromMidiInput = false;

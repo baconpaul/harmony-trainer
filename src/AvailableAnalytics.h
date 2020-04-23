@@ -47,4 +47,14 @@ public:
     }
 };
 
+class ShowStuffAnalyticGreen : public TimedRecordingPracticeAnalytic {
+public:
+    virtual void paint( juce::Graphics &g ) override {
+        auto region = getLocalBounds();
+        g.setColour( juce::Colour( 0, 255 - ( pastNotes.size() * 5 ) % 255, ( pastNotes.size() * 5 ) % 255 ) );
+        g.fillRect( region );
+
+    }
+};
+
 
