@@ -5,34 +5,32 @@
 
 
 HarmonyTrainerComponent::HarmonyTrainerComponent() :
-    keyboardComponent( keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard ),
     notesOn( 0 ), lastNote( 0 )
 {
-    analytic = std::make_unique<ShowStuffAnalytic>();
-    
+    keyboardComponent = std::make_unique<juce::MidiKeyboardComponent>( keyboardState, juce::MidiKeyboardComponent::horizontalKeyboard ),
     keyboardState.addListener(this);
-    
+    addAndMakeVisible(keyboardComponent.get());
+
+    // Open all midi devices
     auto list = juce::MidiInput::getAvailableDevices();
- 
-    // find the first enabled device and use that by default
     for (auto device : list)
     {
-        std::cout << "device : " << device.name << std::endl;
         if (! deviceManager.isMidiInputDeviceEnabled (device.identifier))
         {
-            std::cout << "Enabling device" << std::endl;
             deviceManager.setMidiInputDeviceEnabled (device.identifier, true);
             deviceManager.addMidiInputDeviceCallback (device.identifier, this);
         }
     }
-
-    addAndMakeVisible(keyboardComponent);
+    analytic = std::make_unique<ShowStuffAnalytic>();
+    addAndMakeVisible(analytic.get());
 }
 
 void HarmonyTrainerComponent::resized()
 {
     auto area = getLocalBounds();
-    keyboardComponent.setBounds (area.removeFromTop (82).reduced(8));
+    keyboardComponent->setBounds (area.removeFromTop (82).reduced(8));
+    analytic->setBounds( area.withTop(82).reduced(8));
+
 }
 
 void HarmonyTrainerComponent::handleIncomingMidiMessage( juce::MidiInput *source, const juce::MidiMessage &msg)
@@ -57,10 +55,4 @@ void HarmonyTrainerComponent::handleNoteOff( juce::MidiKeyboardState *source, in
 
 void HarmonyTrainerComponent::paint( juce::Graphics &g )
 {
-    if( analytic != nullptr )
-    {
-        auto area = getLocalBounds().withTop( 82 ).reduced(8);
-        
-        analytic->paint( g, area );
-    }
 }

@@ -39,7 +39,8 @@ public:
 
 class ShowStuffAnalytic : public TimedRecordingPracticeAnalytic {
 public:
-    virtual void paint( juce::Graphics &g, juce::Rectangle<int> region ) override {
+    virtual void paint( juce::Graphics &g ) override {
+        auto region = getLocalBounds();
         g.setColour( juce::Colour( 255 - ( pastNotes.size() * 5 ) % 255, 0, ( pastNotes.size() * 5 ) % 255 ) );
         g.fillRect( region );
 

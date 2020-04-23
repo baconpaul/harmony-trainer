@@ -27,15 +27,15 @@ private:
     juce::AudioDeviceManager deviceManager;
 
     juce::MidiKeyboardState keyboardState;
-    juce::MidiKeyboardComponent keyboardComponent;
-
+    std::unique_ptr<juce::MidiKeyboardComponent> keyboardComponent;
+    std::unique_ptr<PracticeAnalytic> analytic;
+    
     int lastInputIndex = 0;
     bool isAddingFromMidiInput = false;
 
     std::atomic<int> lastNote;
     std::atomic<int> notesOn;
 
-    std::unique_ptr<PracticeAnalytic> analytic;
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HarmonyTrainerComponent);
 };
