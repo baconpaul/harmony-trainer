@@ -26,6 +26,10 @@ target_compile_definitions(HarmonyTrainer PRIVATE
     JUCE_ALLOW_STATIC_NULL_VARIABLES=0
     JUCE_STRICT_REFCOUNTEDPOINTER=1
     DONT_SET_USING_JUCE_NAMESPACE=1
+
+    # see JUCE issue 704
+    JUCE_USE_CURL=0
+    JUCE_WEB_BROWSER=0
 )
 
 target_link_libraries(HarmonyTrainer PRIVATE
