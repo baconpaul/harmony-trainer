@@ -46,7 +46,7 @@ private:
                     bh = juce::jmax (600, (int) (0.7f * getParentHeight()));
 
 #if ! JUCE_MAC
-                bh += LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()
+                bh += juce::LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight();
 #endif
                     
                 setBounds( bx, by, bw, bh );

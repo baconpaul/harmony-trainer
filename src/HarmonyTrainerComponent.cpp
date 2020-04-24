@@ -48,10 +48,10 @@ void HarmonyTrainerComponent::resized()
 {
     auto area = getLocalBounds();
 #if ! JUCE_MAC
-    menuBar->setBounds (area.removeFromTop (LookAndFeel::getDefaultLookAndFeel()
+    menuBar->setBounds (area.removeFromTop (juce::LookAndFeel::getDefaultLookAndFeel()
                                             .getDefaultMenuBarHeight()));
 
-    area.setTop( LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight() );
+    area.setTop( juce::LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight() );
 #endif
     
     keyboardComponent->setBounds (area.removeFromTop (82).reduced(8));
