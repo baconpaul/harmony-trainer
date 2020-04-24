@@ -103,6 +103,7 @@ juce::PopupMenu HarmonyTrainerComponent::getMenuForIndex( int idx, const juce::S
     }
     else if (idx == 1 ) // modes
     {
+        res.addItem( "Velocity and Duration Histogram", [this]() { this->replaceAnalytic( std::make_shared<VelocityAndDurationHistogram>() ); } );
         res.addItem( "Test Analytic", [this]() { this->replaceAnalytic( std::make_shared<TestAnalytic>() ); } );
     }
     else if (idx == 2 ) // help
