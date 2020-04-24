@@ -49,6 +49,9 @@ private:
     std::atomic<int> lastNote;
     std::atomic<int> notesOn;
 
+#if ! JUCE_MAC
+    std::shared_ptr<juce::MenuBarComponent> menuBar;
+#endif    
     
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR(HarmonyTrainerComponent);
 };

@@ -21,13 +21,17 @@ HarmonyTrainerComponent::HarmonyTrainerComponent() :
             deviceManager.addMidiInputDeviceCallback (device.identifier, this);
         }
     }
-    analytic = std::make_shared<ShowStuffAnalytic>();
+
+    // TODO - make it so you can save your selected analytic
+    analytic = std::make_shared<TestAnalytic>();
     addAndMakeVisible(analytic.get());
 
     
 #if JUCE_MAC
-    // FIXME - put the meny on in windows and linux too
     MenuBarModel::setMacMainMenu (this);
+#else
+    menuBar = std::make_shared<juce::MenuBarComponent>(this);
+    addAndMakeVisible(menuBar.get());
 #endif
 
 }
@@ -43,6 +47,13 @@ HarmonyTrainerComponent::~HarmonyTrainerComponent()
 void HarmonyTrainerComponent::resized()
 {
     auto area = getLocalBounds();
+#if ! JUCE_MAC
+    menuBar->setBounds (area.removeFromTop (LookAndFeel::getDefaultLookAndFeel()
+                                            .getDefaultMenuBarHeight()));
+
+    area.setTop( LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight() );
+#endif
+    
     keyboardComponent->setBounds (area.removeFromTop (82).reduced(8));
     analytic->setBounds( area.withTop(82).reduced(8));
 
@@ -92,8 +103,7 @@ juce::PopupMenu HarmonyTrainerComponent::getMenuForIndex( int idx, const juce::S
     }
     else if (idx == 1 ) // modes
     {
-        res.addItem( "Paint a Note", [this]() { this->replaceAnalytic( std::make_shared<ShowStuffAnalytic>() ); } );
-        res.addItem( "Paint Green", [this]() { this->replaceAnalytic( std::make_shared<ShowStuffAnalyticGreen>() ); } );
+        res.addItem( "Test Analytic", [this]() { this->replaceAnalytic( std::make_shared<TestAnalytic>() ); } );
     }
     else if (idx == 2 ) // help
     {

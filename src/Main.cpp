@@ -40,10 +40,16 @@ private:
                 setResizable (true, false);
                 setResizeLimits (400, 400, 10000, 10000);
 
-                setBounds ((int) (0.1f * getParentWidth()),
-                           (int) (0.1f * getParentHeight()),
-                           juce::jmax (850, (int) (0.5f * getParentWidth())),
-                           juce::jmax (600, (int) (0.7f * getParentHeight())));
+                auto bx = (int) (0.1f * getParentWidth()),
+                    by =(int) (0.1f * getParentHeight()),
+                    bw = juce::jmax (850, (int) (0.5f * getParentWidth())),
+                    bh = juce::jmax (600, (int) (0.7f * getParentHeight()));
+
+#if ! JUCE_MAC
+                bh += LookAndFeel::getDefaultLookAndFeel().getDefaultMenuBarHeight()
+#endif
+                    
+                setBounds( bx, by, bw, bh );
 
                 setContentOwned (new HarmonyTrainerComponent(), false);
                 setVisible (true);
